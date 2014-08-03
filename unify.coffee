@@ -1,7 +1,12 @@
+#!/usr/bin/env coffee
+
+fs    = require('fs')
+path  = require('path')
+util  = require('util')
+
+topPath = process.argv[2]
+
 compileRules = (callback = console.log) ->
-    fs    = require('fs')
-    path  = require('path')
-    util  = require('util')
 
     dirTree = (filename, obj) ->
         info = {
@@ -17,9 +22,10 @@ compileRules = (callback = console.log) ->
             obj[info.name] = JSON.parse fs.readFileSync(info.path) if info.name.match(/json/)
 
     obj = {}
-    # console.log(util.inspect(dirTree('monsters',obj), false, null))
-    dirTree('monsters',obj)
-    fs.writeFileSync 'fullMonsters.json', 'MONSTERS=' + JSON.stringify(obj,null,'  ')
+    # console.log(util.inspect(dirTree(topPath,obj), false, null))
+    dirTree(topPath,obj)
+    baseName = path.basename(topPath)
+    fs.writeFileSync './' + baseName + '.json', baseName.toUpperCase() + '=' + JSON.stringify(obj,null,'  ')
     callback() if callback
 
-task 'compileRules', 'Suck in tree of json files and create one master file', -> compileRules()
+compileRules()
