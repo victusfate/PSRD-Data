@@ -20,6 +20,7 @@ compileRules = (callback = console.log) ->
                 dirTree(filename + '/' + child, obj[info.name])
         else
             obj[info.name] = JSON.parse fs.readFileSync(info.path) if info.name.match(/json/)
+            delete obj[info.name].sections
 
     obj = {}
     # console.log(util.inspect(dirTree(topPath,obj), false, null))
