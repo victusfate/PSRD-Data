@@ -13,8 +13,17 @@ nukeIfNoStrength = (oObj) ->
     if oObj.sections
         for oSection,i in oObj.sections
             nukeIfNoStrength(oObj.sections[i])
+        if !oObj.sections.length
+            delete oObj.sections
+    else 
+        if !oObj.strength
+            for oVar,iKey of oObj
+                console.log 'deleting key',iKey,'oVar',oVar
+                delete oObj[iKey]
+
     if !oObj.strength and !(oObj instanceof Array)
         for oVar,iKey of oObj when iKey != 'sections'
+            console.log 'deleting key',iKey,'oVar',oVar
             delete oObj[iKey]
     null
 
